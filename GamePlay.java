@@ -64,12 +64,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.drawString("Score: " + score, 580, 30);
 
         //Slider 
-        g.setColor(Color.magenta);             
-        g.fillRect(playerX, 500, 100, 9);
+        g.setColor(Color.white);             
+        g.fill3DRect(playerX+2, 502, 96, 5,false);//100 is width of slider, true for raised
+        g.setColor(Color.black);             
+        g.draw3DRect(playerX, 500, 100, 9,true);
 
         //Ball
         g.setColor(Color.green);
         g.drawOval(ballposX, ballposY, 19, 19);
+         g.setColor(Color.yellow);
+        g.fillOval(ballposX+1, ballposY+1, 17, 17);
 
         if (ballposY > 580) { // If ball falls down beyond 580 on y axis
             play = false;
@@ -77,12 +81,12 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
             ballYdir = 0;
             g.setColor(Color.red);
             g.setFont(new Font("serif", Font.BOLD, 30));
-            g.drawString("    Game Over Score: " + score, 190, 300);
+            g.drawString("    Game Over.. Score: " + score, 190, 300);
 
-            g.setFont(new Font("serif", Font.BOLD, 30));
+            g.setFont(new Font("serif", Font.ITALIC, 30));
             g.drawString("   Press Enter to Restart", 190, 340);
             
-            if(totalbricks<10){
+            if(totalbricks<10){ // IF totally only 10 bricks were left to win
                 g.setColor(Color.blue);
                 g.setFont(new Font("serif", Font.PLAIN, 40));
                 g.drawString("     Close!", 190, 250);
@@ -94,15 +98,15 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
             ballXdir = -1;
             g.setColor(Color.blue);
             g.setFont(new Font("serif",Font.BOLD,40));
-            g.drawString("    You Won! ",190,300);
-
+            g.drawString("      You Won! ",190,300);
+            g.setColor(Color.red);
             g.setFont(new Font("serif", Font.ITALIC, 26));
             g.drawString("   Press Enter to Restart", 190, 390);
 
 
         }
 
-        g.dispose();   //No use for graphics anymore?
+        g.dispose();   //to reset graphics settings
 
 
     }
@@ -112,16 +116,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         Timer.start();
 
         if (play) { 
-            if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 500, 100, 8))) {
+            if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 500, 100, 9))) {
                 ballYdir = -ballYdir;   //IF Ball hits Slider.. change Y direction,let X continue
             }
 
             BrickForming:
             for (int i = 0; i < mapgen.map.length; i++) {
                 for (int j = 0; j < mapgen.map[0].length; j++) {
-                    if (mapgen.map[i][j] > 0) { //if value of bricks set to 0, those wont be formed
+                    if (mapgen.map[i][j] > 0) { //if value of bricks are set to 0, those wont be formed
                         int brickX = j * mapgen.bricksWidth + 80;// To position the bricks
-                        int brickY = i * mapgen.bricksHeight + 50;
+                        int brickY = i * mapgen.bricksHeight + 50;// 80 50 is the gap between frame and bricks
                         int bricksWidth = mapgen.bricksWidth;
                         int bricksHeight = mapgen.bricksHeight;
 
@@ -135,7 +139,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                             totalbricks--;      //decreases counter of totalbricks
                             score += 5;
                             
-                            //if Balls hits left || Right of bricks..ball width is 19
+                            //if Balls hits left || Right of bricks..ball width is 19,change ball direction
                             if (ballposX + 19 <= brickrect.x || ballposX + 1 >= brickrect.x + bricksWidth) {
                                 ballXdir = -ballXdir;
                             } else {
@@ -181,11 +185,11 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void keyPressed(KeyEvent e) {
        
            if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-                if (playerX >= 590) {playerX = 20;}     // If Slider hits Right Border
+                if (playerX >= 590) {playerX = 0;}     // If Slider hits Right Border
                 else { moveRight();}
             }
         if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-            if (playerX < 20) {playerX = 600;} // If Slider hits Left Border
+            if (playerX < 20) {playerX = 590;} // If Slider hits Left Border
             else { moveLeft();}
         }
   

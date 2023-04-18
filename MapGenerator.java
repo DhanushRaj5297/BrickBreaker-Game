@@ -28,7 +28,7 @@ public class MapGenerator {     // MapGenerator CLASS defined here to draw brick
                 if (map[i][j] > 0) {
                     
                     g.setColor(Color.red);  //To Color each Brick
-                    g.fillRect(j * bricksWidth + 80, i * bricksHeight + 50, bricksWidth, bricksHeight);
+                    g.fill3DRect(j * bricksWidth + 80, i * bricksHeight + 50, bricksWidth, bricksHeight,true);
 
                     g.setStroke(new BasicStroke(3)); //To divide the bricks
                     g.setColor(Color.darkGray);
